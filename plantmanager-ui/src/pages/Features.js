@@ -1,11 +1,16 @@
 import { useState } from "react";
-import { Button, Modal, Form, InputGroup } from "react-bootstrap";
+import { Button, Modal, Form, InputGroup, Card } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import PlantCard from "../components/PlantCard";
 
 const Features = () => {
     const [show, setShow] = useState(false);
     const [plantName, setPlantName] = useState("");
     const [plantImage, setPlantImage] = useState(null);
     const [comments, setComments] = useState([""]);
+    const [plants, setPlants] = useState([]);
+
+    const nav = useNavigate();
 
     const handleOpen = () => setShow(true);
     const handleClose = () => setShow(false);
@@ -49,7 +54,10 @@ const Features = () => {
             credentials: "include",
         })
             .then((res) => res.json())
-            .then((data) => console.log(data))
+            .then((data) => {
+                console.log(data);
+                setPlants([...plants, ...data]);
+            })
             .catch((err) => console.error(err));
     };
 
@@ -63,6 +71,10 @@ const Features = () => {
             <Button variant="secondary" onClick={fetchAllPlants}>
                 Fetch All (Console)
             </Button>
+
+            {plants.map((plant) => (
+                <PlantCard plant={plant} showManageButton={true} />
+            ))}
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>

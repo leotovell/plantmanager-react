@@ -75,7 +75,7 @@ router.get("/all", authMiddleware, async (req, res) => {
         plants.forEach((plant) => {
             const params = {
                 Bucket: process.env.S3_BUCKET_NAME,
-                Key: `images/${plant.image}`,
+                Key: `${plant.image}`,
                 Expires: 60 * 5,
             };
 

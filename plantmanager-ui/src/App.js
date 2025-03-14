@@ -1,8 +1,9 @@
-import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Features from "./pages/Features";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Plant from "./pages/Plant";
 
 const App = () => {
     return (
@@ -24,6 +25,7 @@ const App = () => {
                             </ProtectedRoute>
                         }
                     />
+                    <Route path="/plant/:id" element={<Plant />} />
                     <Route path="/login" element={<Login />} />
                 </Routes>
             </BrowserRouter>
