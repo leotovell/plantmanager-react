@@ -19,9 +19,9 @@ app.use(cookieParser());
 const connectDB = require("./db");
 connectDB();
 
-const r2Routes = require("./r2Routes");
+// const r2Routes = require("./r2Routes");
 
-app.use("/api/r2", r2Routes);
+// app.use("/api/r2", r2Routes);
 
 const plantRoutes = require("./routes/plantRoutes");
 
