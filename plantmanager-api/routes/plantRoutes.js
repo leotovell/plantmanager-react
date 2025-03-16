@@ -19,6 +19,17 @@ const s3 = new AWS.S3({
     signatureVersion: "v4",
 });
 
+// Convert key to signed url
+
+const getImageURL = (plant) => {
+    const params = {
+        Bucket: process.env.S3_BUCKET_NAME,
+        Key: plant.image,
+        Expires: 60 * 5,
+    };
+    plant.image = s3.getSignedUrl("getObject", params);
+};
+
 router.post(
     "/new-plant",
     authMiddleware,
@@ -71,16 +82,10 @@ router.post(
 
 router.get("/all", authMiddleware, async (req, res) => {
     try {
+        console.log("test");
         const plants = await Plant.find();
         plants.forEach((plant) => {
-            const params = {
-                Bucket: process.env.S3_BUCKET_NAME,
-                Key: `${plant.image}`,
-                Expires: 60 * 5,
-            };
-
-            const imageUrl = s3.getSignedUrl("getObject", params);
-            plant.image = imageUrl;
+            getImageURL(plant);
         });
         res.json(plants);
     } catch (error) {
@@ -90,8 +95,10 @@ router.get("/all", authMiddleware, async (req, res) => {
 
 router.get("/:id", authMiddleware, async (req, res) => {
     try {
+        console.log(req.params.id);
         const plant = await Plant.findById(req.params.id);
         if (!plant) return res.status(404).json({ message: "No plant found." });
+        getImageURL(plant);
         res.json(plant);
     } catch (error) {
         res.status(500).json({ message: error.message });

@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Button, Modal, Form, InputGroup, Card } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Button, Modal, Form, InputGroup } from "react-bootstrap";
 import PlantCard from "../components/PlantCard";
 
 const Features = () => {
@@ -9,8 +8,6 @@ const Features = () => {
     const [plantImage, setPlantImage] = useState(null);
     const [comments, setComments] = useState([""]);
     const [plants, setPlants] = useState([]);
-
-    const nav = useNavigate();
 
     const handleOpen = () => setShow(true);
     const handleClose = () => setShow(false);
@@ -73,7 +70,11 @@ const Features = () => {
             </Button>
 
             {plants.map((plant) => (
-                <PlantCard plant={plant} showManageButton={true} />
+                <PlantCard
+                    key={plant._id}
+                    plant={plant}
+                    showManageButton={true}
+                />
             ))}
 
             <Modal show={show} onHide={handleClose}>
