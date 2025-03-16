@@ -30,7 +30,9 @@ const getImageURL = async (plant) => {
         Key: plant.image,
     };
     try {
-        plant.image = await getSignedUrl(new GetObjectCommand(params), {expiresIn: 60 * 5});
+        const command = new GetObjectCommand(params);
+        const signedUrl = await getSignedUrl(s3, command, {expiresIn: 60 * 5});
+        plant.image = signedUrl;
     } catch (err) {
         console.error("Error getting signed url: ", err);
     }
